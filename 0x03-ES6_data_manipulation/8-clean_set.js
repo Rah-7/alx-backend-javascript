@@ -1,19 +1,21 @@
+/**
+ * Joins a set of strings with a dash after stripping the strings of
+ * a leading sub string.
+ * @param {Set<String>} set - A collection of strings.}
+ */
 export default function cleanSet (set, startString) {
-  let appendedstr = '';
-  if (startString === undefined || startString.length === 0) {
+  const parts = [];
+  if (!set || !startString || !(set instanceof Set) || typeof startString !== 'string') {
     return '';
   }
-  if (startString !== '') {
-    let hyphen = 0;
-    for (const string of set) {
-      if (string.startsWith(startString)) {
-        if (hyphen) {
-          appendedstr += '-';
-        }
-        appendedstr += string.slice(startString.length);
-        hyphen = 1;
+  for (const value of set.values()) {
+    if (typeof value === 'string' && value.startsWith(startString)) {
+      const valueSubStr = value.substring(startString.length);
+
+      if (valueSubStr && valueSubStr !== value) {
+        parts.push(valueSubStr);
       }
     }
   }
-  return appendedstr;
+  return parts.join('-');
 }
